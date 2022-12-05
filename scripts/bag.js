@@ -240,7 +240,7 @@ function appendProduct(obj) {
         <img id = "img2" src = "${obj.images[0]}"/>
         <div class = "child">
             <p class = "p">${obj.productTitle}<br>
-            ${obj.category}<h5>Sold By : Vision Star</h5></p>
+            ${obj.categories}<h5>Sold By : Vision Star</h5></p>
             <select name="size" id="size">
                 <option value="SIZE:L">SIZE: L</option>
                 <option value="SIZE:M">SIZE: M</option>
