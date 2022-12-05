@@ -123,6 +123,7 @@ h4 {
 .p {
 	overflow: hidden;
 	text-overflow: ellipsis;
+	width: 480px;
 	white-space: nowrap;
 	line-height: 16px;
 	color: #282c3f;

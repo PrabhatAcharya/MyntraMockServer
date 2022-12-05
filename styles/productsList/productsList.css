@@ -10,6 +10,20 @@
 	/* background-color: red; */
 }
 
+@media screen and (max-width: 600px) {
+	#container {
+		grid-template-columns: repeat(1, 1fr);
+		place-items: center;
+		/* background-color: red; */
+	}
+	#sidebar {
+		display: none;
+	}
+	#rightContainer > header {
+		display: none !important;
+		background-color: red;
+	}
+}
 @media screen and (min-width: 1090px) {
 	#container {
 		grid-template-columns: repeat(3, 1fr);
@@ -95,4 +109,17 @@
 	display: block;
 	height: 2rem;
 	font-size: larger;
+}
+
+#paginate {
+	display: flex;
+	/* background-color: red; */
+	justify-content: space-around;
+	align-items: center;
+	height: 3rem;
+	margin-top: 3rem;
+}
+
+#paginate > button {
+	padding: 0.5rem 2rem;
 }

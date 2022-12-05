@@ -1,5 +1,5 @@
-// import { navbar } from '../components/navbar.js';
-// document.getElementById('navbar').innerHTML = navbar()
+import { navbar } from '../components/navbar.js';
+document.getElementById('navbar').innerHTML = navbar();
 
 import { footer } from '../components/footer.js';
 document.getElementById('footerDiv').innerHTML = footer();
@@ -811,7 +811,7 @@ function append(x, y, containerid) {
 		dealOntopImg.style.width = '100%';
 		dealOntopImg.src = imageIndexPage[i].image;
 		let linkEd = document.createElement('a');
-		linkEd.href = 'productsList.html';
+		linkEd.href = '/pages/productsList.html';
 		linkEd.append(dealOntopImg);
 		document.getElementById(`${containerid}`).append(linkEd);
 	}
@@ -832,3 +832,39 @@ append(161, 169, 'trendsforhim');
 append(169, 176, 'bestforkid');
 append(176, 184, 'newintopbrands');
 append(184, 192, 'springsummerseason');
+
+// ==============Speech to Text====================
+
+let speech2text = () => {
+	var speech = true;
+	window.SpeechRecognition =
+		window.SpeechRecognition || window.webkitSpeechRecognition;
+
+	const recognition = new SpeechRecognition();
+	recognition.interimResults = true;
+
+	recognition.addEventListener('result', (e) => {
+		const transcript = Array.from(e.results)
+			.map((result) => result[0])
+			.map((result) => result.transcript)
+			.join('');
+
+		console.log(transcript);
+		document.getElementById('search').value = transcript;
+	});
+
+	if (speech == true) {
+		recognition.start();
+		recognition.addEventListener('end', (e) => {
+			recognition.stop();
+			let keyEvent = new KeyboardEvent('keypress', { key: 'Enter' });
+			document.getElementById('search').dispatchEvent(keyEvent);
+		});
+	}
+};
+
+document.getElementById('mic').addEventListener('click', speech2text);
+
+document.getElementById('cross').addEventListener('click', (e) => {
+	document.querySelector('#two > ul').innerHTML = '';
+});

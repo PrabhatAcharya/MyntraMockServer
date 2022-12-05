@@ -9,5 +9,5 @@ export default async function addToWishList(id) {
 		headers: { 'Content-Type': 'application/json' },
 	});
 
-	location.reload();
+	// location.reload();
 }

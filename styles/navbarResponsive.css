@@ -1,0 +1,79 @@
+.parent-box-1 {
+	margin: 0;
+}
+
+.logo_div {
+	height: 100%;
+	width: auto;
+	display: grid;
+	place-items: center;
+}
+
+.menu_div {
+	width: auto;
+	gap: 2.5rem;
+}
+
+#navbar {
+	/* display: none; */
+	justify-content: space-between;
+	padding: 0 2rem;
+}
+#navbar > div {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.div1 {
+	display: flex;
+	justify-content: flex-start;
+	margin: 0;
+	padding: 0 2rem;
+	width: 100%;
+}
+
+#mic {
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	font-size: large;
+}
+
+#inputSearchIcon {
+	width: 100%;
+}
+
+#inputSearchIcon > span {
+	margin: 0 0.2rem;
+}
+
+.parent-box-2 {
+	width: 100%;
+	margin: 0;
+
+	/* background-color: red; */
+}
+
+#search {
+	/* max-width: 40rem; */
+	width: 100%;
+}
+
+#other_div {
+	margin: 0;
+	padding: 0;
+	/* width: 100%; */
+}
+
+#two {
+	z-index: 50;
+}
+
+#two > ul {
+	width: 100%;
+}
+
+#cross {
+	position: absolute;
+	right: 0;
+	font-size: x-large;
+}

@@ -61,13 +61,26 @@
 // }
 
 import getData from '../utils/getData.js';
-const URL = 'http://localhost:3000/products';
+import URL from '../utils/url.js';
 
 async function renderCartProducts() {
-	const data = await getData('http://localhost:3000/products');
+	const data = await getData(URL);
+	// console.log(data);
 	const filtered = data.filter((e) => {
 		return e.cart;
 	});
+
+	if (filtered.length === 0) {
+		const body = document.querySelector('body');
+		body.innerHTML = '';
+		body.style.background = 'url(../images/emptyBag.png)';
+		body.style.backgroundPosition = 'center top';
+		body.style.minHeight = '100vh';
+		body.style.backgroundSize = '100% 100%';
+		body.addEventListener('click', (e) => {
+			location = 'wishlist.html';
+		});
+	}
 
 	document.getElementById(
 		'totalCount'
@@ -75,6 +88,7 @@ async function renderCartProducts() {
 	document.getElementById('totalItem').innerHTML = filtered.length;
 
 	const cartProducts = document.getElementById('cartProducts');
+	cartProducts.innerHTML = '';
 
 	filtered.forEach(async (e) => {
 		cartProducts.innerHTML += appendProduct(e);
@@ -90,44 +104,38 @@ async function renderCartProducts() {
 
 	quantities.forEach((e) => {
 		e.addEventListener('change', async (el) => {
-			const res = fetch(URL + `/${el.target.getAttribute('data-prodId')}`, {
-				method: 'PATCH',
-				body: JSON.stringify({ quantity: el.target.value }),
-				headers: { 'Content-Type': 'application/json' },
-			});
+			const res = await fetch(
+				URL + `/${el.target.getAttribute('data-prodId')}`,
+				{
+					method: 'PATCH',
+					body: JSON.stringify({ quantity: el.target.value }),
+					headers: { 'Content-Type': 'application/json' },
+				}
+			);
+			location.reload();
 		});
 	});
 
 	const deleteButtons = document.getElementsByName('deleteButton');
 	console.log(deleteButtons);
-	deleteButtons.forEach((e) => {
-		e.addEventListener('click', async (e) => {
-			const res = fetch(URL + `/${e.target.getAttribute('data-prodId')}`, {
-				method: 'PATCH',
-				body: JSON.stringify({ cart: false }),
-				headers: { 'Content-Type': 'application/json' },
-			});
+	deleteButtons.forEach((el) => {
+		el.addEventListener('click', async (e) => {
+			const res = await fetch(
+				URL + `/${e.target.getAttribute('data-prodId')}`,
+				{
+					method: 'PATCH',
+					body: JSON.stringify({ cart: false }),
+					headers: { 'Content-Type': 'application/json' },
+				}
+			);
+
+			console.log(res);
+
+			location.reload();
+			// renderCartProducts();
 		});
 	});
 }
-
-var obj = {
-	id: 1,
-	productTitle: 'p2',
-	productDetails: 'this is a product details and this is written by harsh.',
-	images: [
-		'https://assets.myntassets.com/f_webp,dpr_2.8,q_60,w_210,c_limit,fl_progressive/assets/images/13765620/2021/6/15/99fb4822-6259-4de3-8269-277a932f2e7c1623754255227INVICTUSMenPrintedMaternityShirt1.jpg',
-	],
-	rating: 4.5, //1-5 float
-	size: 'small', //small,medium,large
-	price: 4500, //in INR
-	category: '',
-	discount: 10,
-	brand: '',
-	women: true,
-	wishlist: true,
-	cart: false,
-};
 
 function appendPage() {
 	let pro = JSON.parse(localStorage.getItem('clickedProduct'));
@@ -166,7 +174,7 @@ function appendPage() {
                     <hr class = "child4">
                     <p class = "child5">PRICE DETAILS(<span id="totalItem"> </span> Item)</p>
                     <p class = "child6">Total MRP</p>
-                    <p class = "child7" id="totalMrp">Rs. ${obj.price}</p>
+                    <p class = "child7" id="totalMrp">Rs. </p>
                     <p class = "child8">Discount on MRP</p>
                     <p class = "child9" id="totalDiscount">- Rs. </p>
                     <p class = "child10">Coupon Discount</p>
@@ -185,7 +193,7 @@ renderCartProducts();
 const totalAmount = document.getElementById('totalAmount');
 
 async function setTotalAmount() {
-	const data = await getData('http://localhost:3000/products');
+	const data = await getData(URL);
 	const filtered = data.filter((e) => {
 		return e.cart;
 	});

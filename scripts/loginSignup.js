@@ -1,48 +1,74 @@
-import { navbar } from '../components/navbar.js';
+// importing navbar here
+import { navbar } from "../components/navbar.js";
+document.getElementById("navbar").innerHTML = navbar();
+localStorage.setItem("loggedIn", JSON.stringify(""));
 
-document.getElementById('navbar').innerHTML = navbar();
-
-var card = document.getElementById('card');
+var card = document.getElementById("card");
 function openregister() {
-	card.style.transform = 'rotateY(-180deg)';
+	card.style.transform = "rotateY(-180deg)";
 }
 function openlogin() {
-	card.style.transform = 'rotateY(0deg)';
+	card.style.transform = "rotateY(0deg)";
 }
+document.getElementById("signup-btn").addEventListener("click", openregister);
+document.getElementById("sigin-btn").addEventListener("click", openlogin);
 
 //form-validation
+document
+	.getElementById("signUp-button")
+	.addEventListener("click", checkcredentials);
 
+let arr = JSON.parse(localStorage.getItem("userDetails")) || [];
 function checkcredentials() {
-	let registermobile = document.getElementById('registermobileno').value;
-	let createpass = document.getElementById('create-password').value;
-	let confirmpass = document.getElementById('confirm-password').value;
-	localStorage.setItem('mobile', registermobile);
-	localStorage.setItem('createpass', createpass);
-	localStorage.setItem('confirmpass', confirmpass);
-	if (createpass != confirmpass) {
-		alert('password doesnot match');
+	let name = document.getElementById("name").value;
+	let registermobile = document.getElementById("registermobileno").value;
+	// let createpass = document.getElementById('create-password').value;
+	let confirmpass = document.getElementById("confirm-password").value;
+
+	let obj = {
+		registermobile: registermobile,
+		name,
+		password: confirmpass,
+	};
+	if (registermobile == "null" || name == "" || confirmpass == "") {
+		alert("enter all details");
 	} else {
-		alert('Registration successfull');
+		arr.push(obj);
+		localStorage.setItem("userDetails", JSON.stringify(arr));
+		alert("Registration successfull");
 		openlogin();
 	}
 }
 
+document.getElementById("login-button").addEventListener("click", logincheck);
+
 function logincheck() {
-	let loginmobile = document.getElementById('mobileno').value;
-	let loginpassword = document.getElementById('password').value;
-	let mobile = localStorage.getItem('mobile');
-	let confirmpassword = localStorage.getItem('confirmpass');
+	console.log("inside login check");
+	let loginmobile = document.getElementById("mobileno").value;
+	let loginpassword = document.getElementById("password").value;
+	let data = JSON.parse(localStorage.getItem("userDetails"));
+	let login = false;
+	let matchmobile = false;
 
-  if(loginmobile != mobile ){
-    alert("acount doesnot exist , kindly register yourself first")
-    openregister();
-  }
-
-  if(loginmobile===mobile && loginpassword===confirmpassword){
-    alert("login successfull")
-    window.location.href="../pages/index.html"
-  }
-  else{
-    alert("wrong details");
-  }
+	let userName = "";
+	data.map((elem) => {
+		if (loginmobile == elem.registermobile && loginpassword == elem.password) {
+			login = true;
+			userName = elem.name;
+		} else if (loginmobile == elem.registermobile) {
+			matchmobile = true;
+		}
+	});
+	if (loginmobile == "" || loginpassword == "") {
+		alert("All Fields are Mandatory");
+	} else if (login) {
+		alert("Login Successfull");
+		localStorage.setItem("loggedIn", JSON.stringify(userName));
+		console.log(userName);
+		window.location.href = "../index.html";
+	} else if (matchmobile) {
+		alert("Wrong Password");
+	} else {
+		alert("User not Found");
+	}
 }

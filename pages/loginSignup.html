@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -12,17 +13,24 @@
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+		<link
+			rel="stylesheet"
+			href="../styles/loginSignup.css" />
+		<!-- <link rel="stylesheet" href="../styles/common.css"> -->
+		<!-- <link rel="stylesheet" href="../styles/bag.css"> -->
 		<link
 			rel="stylesheet"
 			href="../styles/navbar.css" />
 		<link
 			rel="stylesheet"
-			href="../styles/loginSignup.css" />
+			href="../styles/navbarResponsive.css" />
 	</head>
 	<body>
 		<div id="nav">
 			<div id="navbar"></div>
 		</div>
+
 		<div class="container">
 			<div class="card">
 				<div
@@ -41,29 +49,24 @@
 								<input
 									type="text"
 									id="mobileno"
-									placeholder="Mobile Number" /><br />
+									placeholder="Mobile Number"
+									required /><br />
 								<input
 									type="password"
 									id="password"
-									placeholder="Enter Password" />
+									placeholder="Enter Password"
+									required />
 							</form>
 							<p>
 								By continuing I agree to the<span class="smallhead">
 									Terms of Use </span
 								>&<span id="small"> Privacy Policy</span>
 							</p>
-							<p>
-								Don't have account
-								<span
-									onclick="openregister()"
-									id="signup-btn"
-									>Signup</span
-								>
-							</p>
+							<p>Don't have account <span id="signup-btn">Signup</span></p>
 							<div id="alert"></div>
 							<div
 								class="continue"
-								onclick="logincheck()">
+								id="login-button">
 								CONTINUE
 							</div>
 						</div>
@@ -79,21 +82,21 @@
 								Register <span id="smallheader"></span>
 							</div>
 							<form id="login">
-                        <input type="text" id="name" placeholder="Name" />
 								<input
 									type="text"
 									id="registermobileno"
 									placeholder="Mobile Number" /><br />
 								<input
-									type="password"
-									id="create-password"
-									placeholder="Create Password" />
+									type="text"
+									id="name"
+									placeholder="Name" /><br />
+
 								<p id="alert"></p>
 								<div>
 									<input
 										type="password"
 										id="confirm-password"
-										placeholder="Confirm Password" />
+										placeholder="Password" />
 								</div>
 							</form>
 							<p>
@@ -101,18 +104,11 @@
 									Terms of Use </span
 								>&<span id="small"> Privacy Policy</span>
 							</p>
-							<p>
-								already have an account
-								<span
-									onclick="openlogin()"
-									id="sigin-btn"
-									>Login</span
-								>
-							</p>
+							<p>already have an account <span id="sigin-btn">Login</span></p>
 							<div id="alert"></div>
 							<div
 								class="continue"
-								onclick="checkcredentials()">
+								id="signUp-button">
 								SIGNUP
 							</div>
 						</div>
@@ -122,6 +118,11 @@
 		</div>
 	</body>
 </html>
+
 <script
-	src="../scripts/loginSignup.js"
-	type="module"></script>
+	type="module"
+	src="../scripts/loginSignup.js"></script>
+
+<!-- <script src="../scripts/loginSignup.js" ></script> -->
+<!-- <script src="../scripts/"></script> -->
+<script src="https://kit.fontawesome.com/38a85f32db.js"></script>

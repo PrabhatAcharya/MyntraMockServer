@@ -11,6 +11,9 @@
 		<title>Document</title>
 		<link
 			rel="stylesheet"
+			href="../styles/navbar.css" />
+		<link
+			rel="stylesheet"
 			href="../styles/common.css" />
 		<link
 			rel="stylesheet"
@@ -29,7 +32,10 @@
 			referrerpolicy="no-referrer" />
 		<link
 			rel="stylesheet"
-			href="../styles/navbar.css" />
+			href="../styles/footer.css" />
+		<link
+			rel="stylesheet"
+			href="../styles/navbarResponsive.css" />
 	</head>
 	<body>
 		<div id="nav">
@@ -72,6 +78,20 @@
 					</section>
 					<section id="price">
 						<h3>Price</h3>
+						<div class="inputGroup">
+							<input
+								name="price"
+								type="checkbox"
+								id="100-1000" />
+							<label for="100-1000">100-1000</label>
+						</div>
+						<div class="inputGroup">
+							<input
+								name="price"
+								type="checkbox"
+								id="1001-2000" />
+							<label for="1001-2000">1001-2000</label>
+						</div>
 						<div class="inputGroup">
 							<input
 								name="price"
@@ -182,11 +202,20 @@
 						</select>
 					</header>
 					<div id="container"></div>
+					<div id="paginate">
+						<button id="prev">Previous</button>
+						<p id="page">1</p>
+						<button id="next">Next</button>
+					</div>
 				</div>
 			</div>
 		</div>
+		<div id="footerDiv"></div>
 	</body>
 	<script
 		src="../scripts/productsList.js"
 		type="module"></script>
+	<script
+		src="https://kit.fontawesome.com/38a85f32db.js"
+		crossorigin="anonymous"></script>
 </html>

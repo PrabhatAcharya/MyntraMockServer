@@ -1,8 +1,10 @@
 import getData from '../utils/getData.js';
 import { navbar } from '../components/navbar.js';
 import URL from '../utils/url.js';
+import { footer } from '../components/footer.js';
 document.getElementById('navbar').innerHTML = navbar();
 
+document.getElementById('footerDiv').innerHTML = footer();
 import renderProducts from '../utils/renderSingleProduct.js';
 
 // const URL = 'http://localhost:3000/products';
@@ -41,16 +43,18 @@ if (!productsFor) {
 }
 
 const filterProducts = async (URL) => {
-	const products = await getData(URL);
-	const filtered = products.filter((el) => {
-		return el.gender === productsFor;
-	});
-	return filtered;
+	const products = await getData(URL + '&gender=' + productsFor);
+	// const filtered = products.filter((el) => {
+	// 	return el.gender === productsFor;
+	// });
+	console.log(products);
+	return products;
 };
 
 const container = document.getElementById('container');
 
 const renderAllProducts = async (data) => {
+	container.innerHTML = '';
 	data.forEach((el) => {
 		renderProducts(el, container);
 	});
@@ -66,7 +70,45 @@ const renderAllProducts = async (data) => {
 	document.getElementById('selectedCount').innerHTML = data?.length || 0;
 };
 
-renderAllProducts(await filterProducts(URL));
+const page = document.getElementById('page');
+const next = document.getElementById('next');
+const prev = document.getElementById('prev');
+
+renderAllProducts(
+	await filterProducts(URL + `?_page=${+page.innerHTML}&_limit=8`)
+);
+
+if (+page.innerHTML === 1) {
+	prev.disabled = true;
+}
+
+next.addEventListener('click', async (e) => {
+	if (+page.innerHTML < 5) {
+		e.target.disabled = false;
+		prev.disabled = false;
+		page.innerHTML = +page.innerHTML + 1;
+		renderAllProducts(
+			await filterProducts(URL + `?_page=${+page.innerHTML}&_limit=8`)
+		);
+	} else {
+		console.log(e.target);
+		// e.target.style.opacity = '0.2';
+	}
+});
+prev.addEventListener('click', async (e) => {
+	if (+page.innerHTML > 1) {
+		e.target.disabled = false;
+		next.disabled = false;
+		page.innerHTML = +page.innerHTML - 1;
+		renderAllProducts(
+			await filterProducts(URL + `?_page=${+page.innerHTML}&_limit=8`)
+		);
+	} else {
+		console.log(e.target);
+		e.target.disabled = true;
+		// e.target.style.opacity = '0.2';
+	}
+});
 
 ///////////////////////////////
 ///Price range application
@@ -97,7 +139,9 @@ async function applyPriceCap() {
 	});
 
 	var priceAppliedProducts = [];
-	const filtered = await filterProducts(URL);
+	const filtered = await filterProducts(
+		URL + `?_page=${+page.innerHTML}&_limit=8`
+	);
 	// const productsWithDiscounts = await applyDiscounts();
 
 	// if (productsWithDiscounts.length > 0) filtered = productsWithDiscounts;
@@ -107,7 +151,7 @@ async function applyPriceCap() {
 		for (let i = 0; i < priceCapApplied.length; i++) {
 			let el = priceCapApplied[i];
 
-			if (el.id === '2000-3000') {
+			if (el.id === '100-1000') {
 				let ans = filtered.filter((el) => {
 					let priceAfterDiscount;
 					if (el.discount) {
@@ -116,7 +160,39 @@ async function applyPriceCap() {
 						priceAfterDiscount = el.price;
 					}
 
-					return +priceAfterDiscount >= 2000 && +priceAfterDiscount <= 3000;
+					return +priceAfterDiscount >= 100 && +priceAfterDiscount <= 1000;
+				});
+
+				priceAppliedProducts = priceAppliedProducts.concat(ans);
+			} else if (el.id === '1001-2000') {
+				let ans = filtered.map((el) => {
+					return el;
+				});
+
+				ans = ans.filter((el) => {
+					let priceAfterDiscount;
+					if (el.discount) {
+						priceAfterDiscount = +el.price - (+el.price * el.discount) / 100;
+					} else {
+						priceAfterDiscount = el.price;
+					}
+					return +priceAfterDiscount >= 1001 && +priceAfterDiscount <= 2000;
+				});
+
+				priceAppliedProducts = priceAppliedProducts.concat(ans);
+			} else if (el.id === '2001-3000') {
+				let ans = filtered.map((el) => {
+					return el;
+				});
+
+				ans = ans.filter((el) => {
+					let priceAfterDiscount;
+					if (el.discount) {
+						priceAfterDiscount = +el.price - (+el.price * el.discount) / 100;
+					} else {
+						priceAfterDiscount = el.price;
+					}
+					return +priceAfterDiscount >= 2001 && +priceAfterDiscount <= 3000;
 				});
 
 				priceAppliedProducts = priceAppliedProducts.concat(ans);
@@ -178,7 +254,9 @@ const selectEl = document.getElementById('sorting');
 
 selectEl.addEventListener('change', async (e) => {
 	let dataToBeSorted;
-	const filtered = await filterProducts(URL);
+	const filtered = await filterProducts(
+		URL + `?_page=${+page.innerHTML}&_limit=8`
+	);
 	const priceApplied = await applyPriceCap();
 	// const discountsPrice = await applyDiscounts();
 
@@ -267,7 +345,9 @@ discounts.forEach((e) => {
 async function applyDiscounts() {
 	let dataToBeSorted;
 
-	let filtered = await filterProducts(URL);
+	let filtered = await filterProducts(
+		URL + `?_page=${+page.innerHTML}&_limit=8`
+	);
 	let priceApplied = await applyPriceCap();
 
 	if (priceApplied.length > 0) {

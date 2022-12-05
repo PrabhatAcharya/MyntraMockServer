@@ -1,29 +1,32 @@
-import data from '../data/data.js';
-console.log(data);
+// import data from '../data/data.js';
+import getData from '../utils/getData.js';
+import URL from '../utils/url.js';
+import { navbar } from '../components/navbar.js';
+import { footer } from '../components/footer.js';
+document.getElementById('navbar').innerHTML = navbar();
 
-let productDetailContainer = document.getElementById("productDetailContainer");
+// console.log(data);
 
-const displayData = () => {
+let productDetailContainer = document.getElementById('productDetailContainer');
+let product = JSON.parse(localStorage.getItem('indProduct'));
 
-  let product = JSON.parse(localStorage.getItem("indProduct"));
+const displayData = async () => {
+	let productDetailParent = document.getElementById('productDetailParent');
 
-  let productDetailParent = document.getElementById("productDetailParent");
+	let Left = document.getElementById('left');
+	let Right = document.getElementById('right');
 
-  let Left = document.getElementById("left");
-  let Right = document.getElementById("right");
+	let p = document.createElement('p');
+	p.setAttribute('class', 'produtPara');
+	p.innerHTML = `Home / Clothing / Men Clothing / Tshirts /<span> ${product.brand}</span>/<span> ${product.productTitle}</span>`;
+	productDetailContainer.append(p);
 
-  let p = document.createElement("p");
-  p.setAttribute("class", "produtPara");
-  p.innerHTML = `Home / Clothing / Men Clothing / Tshirts /<span> ${product.brand}</span>/<span> ${product.productTitle}</span>`;
-  productDetailContainer.append(p);
+	Left.innerHTML = `<img src="${product.images[0]}" alt="">
+  <img src="${product.images[1]}" alt="">
+  <img src="${product.images[2]}" alt="">
+  <img src="${product.images[3]}" alt="">`;
 
-  Left.innerHTML = `<img src="${product.images}" alt="">
-  <img src="${product.images}" alt="">
-  <img src="${product.images}" alt="">
-  <img src="${product.images}" alt="">`;
-
-
-  Right.innerHTML = ` <h3 class="poductName">${product.brand}</h3>
+	Right.innerHTML = ` <h3 class="poductName">${product.brand}</h3>
     <h3 class="ProductTitle">${product.productTitle}</h3>
     <div class="ratebox">
     <p class="productRating">${product.rating}</p>
@@ -31,7 +34,7 @@ const displayData = () => {
       src="https://www.pngkey.com/png/full/894-8942242_blue-star-clipart-blue-star-clip-art-at.png"
     />
     <div class="separator">|</div>
-    // <span class="ratingCount">${product.count}k Rating</span>
+    <span class="ratingCount">${product.count}k Rating</span>
     </div>
     <hr>
     <div class="price"> Rs. ${product.price}    <span class="line-through">Rs. ${product.off_price}</span>     <span class="discount">(${product.discount}% OFF)</span>
@@ -89,8 +92,18 @@ const displayData = () => {
     <hr>
   `;
 
-  productDetailParent.append(Left, Right);
-  productDetailContainer.append(productDetailParent);
-}
+	productDetailParent.append(Left, Right);
+	productDetailContainer.append(productDetailParent);
+};
 
 displayData();
+document.getElementById('footerDiv').innerHTML = footer();
+document.getElementById('cart').addEventListener('click', async (e) => {
+	console.log(product);
+	await fetch(URL + '/' + product.id, {
+		method: 'PATCH',
+		body: JSON.stringify({ cart: true }),
+		headers: { 'Content-Type': 'application/json' },
+	});
+	location = 'bag.html';
+});
